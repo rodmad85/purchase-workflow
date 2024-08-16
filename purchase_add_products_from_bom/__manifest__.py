@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     'name': 'Purchase - Add Products from BoM',
-    'version': '12.0.1.0.0',
+    'version': '14.0.1.0.0',
     'author': 'Akretion,'
               'Odoo Community Association (OCA)',
     'category': 'Purchase Management',
@@ -14,13 +14,15 @@
     'website': 'https://github.com/OCA/purchase-workflow',
     'development_status': 'Mature',
     'maintainers': [
-        'mbcosta',
+        'mbcosta','rodmad85'
     ],
     'data': [
         # Wizard
         'wizard/add_products_from_bom_view.xml',
         # Views
         'views/purchase_order_view.xml',
+        #Security
+        "security/ir.model.access.csv",
     ],
     'installable': True,
 }

@@ -5,6 +5,7 @@
 from odoo import _, api, fields, models
 from odoo.addons import decimal_precision as dp
 from odoo.exceptions import UserError
+from datetime import datetime
 
 
 class AddProductsFromBoM(models.TransientModel):
@@ -20,6 +21,8 @@ class AddProductsFromBoM(models.TransientModel):
         string='Product',
         required=True,
     )
+    name = fields.Char(related = 'product_id.name')
+
     product_uom_id = fields.Many2one(
         comodel_name='uom.uom',
         string='Unit of Measure',
@@ -134,7 +137,7 @@ class AddProductsFromBoM(models.TransientModel):
         if not self.env.context.get('default_product_qty'):
             self.bom_id = False
             self.product_uom_id = False
-            self.list_prod_already_exp = False
+            #self.list_prod_already_exp = False
             self.raw_product_line_ids = [(5, 0, 0)]
 
         # Case one BoM, filled field.
@@ -184,6 +187,8 @@ class AddProductsFromBoM(models.TransientModel):
             product_already_in_line = self.purchase_id.order_line.search([
                 ('order_id', '=', self.purchase_id.id),
                 ('product_id', '=', line.product_id.id),
+                ('name', '=', line.product_id.name),
+
             ])
 
             if product_already_in_line:
@@ -201,6 +206,10 @@ class AddProductsFromBoM(models.TransientModel):
         values['order_id'] = self.purchase_id.id
         # Price informed by user has priority
         values['price_unit'] = line.price_unit
+        values['name'] = line.name
+        values['product_qty'] = line.product_qty
+        values['date_planned'] = datetime.now()
+
         return values
 
 
@@ -218,6 +227,8 @@ class AddProductsFromBoMLines(models.TransientModel):
         comodel_name='product.product',
         string='Product'
     )
+    name = fields.Char(
+        related='product_id.name')
     orig_bom_product_id = fields.Many2one(
         comodel_name='product.product',
         string='Origin BoM Product',
