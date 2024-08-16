@@ -8,7 +8,7 @@
             <form string="Add Products From BoM">
                 <group>
                     <group>
-                        <field name="product_id" options="{'no_create':True,'no_open':True}" domain="[('bom_count', '!=', 0)]"/>
+                        <field name="product_id" options="{'no_create':True,'no_open':True}" /> <!-- domain is not working domain="[('bom_count', '!=', 0)]" -->
                         <field name="bom_ids" invisible="1"/>
                         <field name="bom_id" domain="[('id', 'in', bom_ids)]" options="{'no_create':True,'no_open':True}" required="True" />
                         <label for="product_qty"/>
